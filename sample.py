@@ -12,3 +12,4 @@ vissim.LoadNet(inpx_path)
 vissim.LoadLayout(layx_path)
 
 print(inpx_path)
+
