@@ -1,4 +1,4 @@
-from ..lib.model import Model
+from lib.model import Model
 import win32com.client
 
 class Vissim(Model):
