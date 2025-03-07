@@ -1,4 +1,10 @@
+import sqlite3
+
 class CommonObject:
+    def __init__(self):
+        self.conn = sqlite3.connect('simulator.db')
+        self.cursor = self.conn.cursor()
+
     def get(self, property_name):
         """
         プロパティの値を取得するメソッド
