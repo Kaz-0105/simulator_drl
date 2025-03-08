@@ -1,7 +1,10 @@
 from lib.common import CommonObject
-class Model(CommonObject):
+
+class Object(CommonObject):
     def __init__(self):
         super().__init__()
+
+
         
     
     
