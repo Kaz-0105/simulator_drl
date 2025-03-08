@@ -26,7 +26,6 @@ class Road (Object):
         self.roads = roads
 
         self.id = data.id
-        self.order_id = data.order_id
 
         self.Links = Links(self, data.road_tags)
 
