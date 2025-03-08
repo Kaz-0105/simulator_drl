@@ -1,5 +1,5 @@
 from config.config import Config
-from model.vissim import Vissim
+from object.vissim import Vissim
 
 
 config = Config()
