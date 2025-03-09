@@ -19,10 +19,13 @@ class Config(CommonObject):
             '5' : '左折用コネクタ',
         }
 
-        # TODO : vissim_file_idをGUIから作成したい
+        # TODO : vissim_file_id, inflow_idをGUIから取得したい
         self.vissim_file_id = 1
+        self.inflow_id = 1
 
         # vissim_fileの取得
         self.vissim_file = self.config_controller.getVissimFile(self.vissim_file_id)
+        self.inflow = self.config_controller.getInflow(self.vissim_file_id, self.inflow_id)
+
     
         

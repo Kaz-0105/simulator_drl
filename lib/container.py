@@ -16,3 +16,14 @@ class Container (CommonObject):
     
     def objectByKey(self, id):
         return self.elements[id]
+
+    def getAll(self, sequence_flg=False):
+        if sequence_flg:
+            new_elements = {}
+            count = 0
+            for _, value in self.elements.items():
+                new_elements[count] = value
+                count += 1
+            return new_elements
+        else:
+            return self.elements
