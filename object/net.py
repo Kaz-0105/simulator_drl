@@ -32,12 +32,12 @@ class Net (Container):
         roads_data = vissim_file.roads
 
         for road_data in roads_data:
-            road_tags = road_data.road_tags
-            for road_tag in road_tags:
-                road = self.roads.objectByKey(road_tag.road_id)
-                link = self.links.objectByKey(road_tag.link_id)
+            road_link_tags = road_data.road_link_tags
+            for road_link_tag in road_link_tags:
+                road = self.roads.objectByKey(road_link_tag.road_id)
+                link = self.links.objectByKey(road_link_tag.link_id)
 
-                link.set('type', road_tag.link_type)
+                link.set('type', road_link_tag.link_type)
                 link.set('road', road)
 
                 road.links.add(link)
@@ -47,17 +47,17 @@ class Net (Container):
         intersections_data = vissim_file.intersections
 
         for intersection_data in intersections_data:
-            intersection_tags = intersection_data.intersection_tags
-            for intersection_tag in intersection_tags:
-                intersection = self.intersections.objectByKey(intersection_tag.intersection_id)
-                road = self.roads.objectByKey(intersection_tag.road_id)
+            intersection_road_tags = intersection_data.intersection_road_tags
+            for intersection_road_tag in intersection_road_tags:
+                intersection = self.intersections.objectByKey(intersection_road_tag.intersection_id)
+                road = self.roads.objectByKey(intersection_road_tag.road_id)
 
-                if intersection_tag.type == 1:
+                if intersection_road_tag.type == 1:
                     road.set('output_intersection', intersection)
-                    intersection.input_roads.add(road, intersection_tag.order)
-                elif intersection_tag.type == 2:
+                    intersection.input_roads.add(road, intersection_road_tag.order)
+                elif intersection_road_tag.type == 2:
                     road.set('input_intersection', intersection)
-                    intersection.output_roads.add(road, intersection_tag.order) 
+                    intersection.output_roads.add(road, intersection_road_tag.order) 
 
     def connectRoadVehicleInput(self):
         for _, vehicle_input in self.vehicle_inputs.getAll().items():

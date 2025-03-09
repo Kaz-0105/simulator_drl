@@ -1,4 +1,4 @@
-CREATE TABLE intersection_tags (
+CREATE TABLE intersection_road_tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     intersection_id INTEGER NOT NULL,
     road_id INTEGER NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE intersection_tags (
     "type" INTEGER NOT NULL
 );
 
-INSERT INTO intersection_tags (intersection_id, road_id, "order", "type") VALUES 
+INSERT INTO intersection_road_tags (intersection_id, road_id, "order", "type") VALUES 
 (1, 1, 4, 1),
 (1, 2, 2, 2),
 (1, 3, 4, 2),
