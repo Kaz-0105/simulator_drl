@@ -4,6 +4,7 @@ from sqlalchemy import MetaData
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import joinedload
 
 engine = create_engine('sqlite:///simulator.db')
 metadata = MetaData()
@@ -47,6 +48,46 @@ class InflowTag(Base):
     volume = Column(Float)
 
     inflow = relationship('Inflow', back_populates='inflow_tags')
+
+class RouteSet(Base):
+    __tablename__ = 'route_sets'
+
+    id = Column(Integer, primary_key=True)
+    num_roads = Column(Integer)
+    name = Column(String)
+    description = Column(String)
+
+    route_set_tags = relationship('RouteSetTag', back_populates='route_set')
+
+class RouteSetTag(Base):
+    __tablename__ = 'route_set_tags'
+
+    id = Column(Integer, primary_key=True)
+    route_set_id = Column(Integer, ForeignKey('route_sets.id'))
+    order = Column(Integer)
+    route_id = Column(Integer, ForeignKey('routes.id'))
+
+    route_set = relationship('RouteSet', back_populates='route_set_tags')
+    route = relationship('Route', back_populates='route_set_tags')
+
+class Route(Base):
+    __tablename__ = 'routes'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    route_set_tags = relationship('RouteSetTag', back_populates='route')
+    route_tags = relationship('RouteTag', back_populates='route')
+
+class RouteTag(Base):
+    __tablename__ = 'route_tags'
+
+    id = Column(Integer, primary_key=True)
+    route_id = Column(Integer, ForeignKey('routes.id'))
+    order = Column(Integer)
+    relative_volume = Column(Float)
+
+    route = relationship('Route', back_populates='route_tags')
 
 class Road(Base):
     __tablename__ = 'roads'
@@ -101,13 +142,33 @@ class ConfigController:
         self.IntersectionRoadTag = IntersectionRoadTag
         self.Inflow = Inflow
         self.InflowTag = InflowTag
+        self.RouteSet = RouteSet
+        self.RouteSetTag = RouteSetTag
+        self.Route = Route
+        self.RouteTag = RouteTag
 
     def getVissimFile(self, vissim_file_id):
         return self.session.query(self.VissimFile).filter_by(id=vissim_file_id).first()
     
     def getInflow(self, vissim_file_id, inflow_id):
         return self.session.query(self.Inflow).filter_by(id=inflow_id, vissim_file_id=vissim_file_id).first()
-    
+
+    def getRouteSets(self, route_set_ids):
+        # DBからデータを取得
+        route_sets_data = self.session.query(self.RouteSet).filter(self.RouteSet.id.in_(list(route_set_ids.values()))).all()
+        
+        # キーをID，値をRouteSetオブジェクトとした辞書を作成
+        route_sets_dict = {}
+        for route_set_data in route_sets_data:
+            route_sets_dict[route_set_data.id] = route_set_data
+        
+        # キーを交差点ID，値をRouteSetオブジェクトとした辞書を作成
+        route_sets = {}
+        for intersection_id, route_set_id in route_set_ids.items():
+            route_sets[intersection_id] = route_sets_dict[route_set_id]
+        
+        return route_sets
+
     @staticmethod
     def sortById(model_data):
         sorted_data = {}

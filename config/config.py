@@ -19,13 +19,15 @@ class Config(CommonObject):
             '5' : '左折用コネクタ',
         }
 
-        # TODO : vissim_file_id, inflow_idをGUIから取得したい
+        # TODO : vissim_file_id, inflow_id, route_set_idsをGUIから取得したい
         self.vissim_file_id = 1
         self.inflow_id = 1
+        self.route_set_ids = {'1' : 1}
 
         # vissim_fileの取得
         self.vissim_file = self.config_controller.getVissimFile(self.vissim_file_id)
         self.inflow = self.config_controller.getInflow(self.vissim_file_id, self.inflow_id)
+        self.route_sets = self.config_controller.getRouteSets(self.route_set_ids)
 
     
         
