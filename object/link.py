@@ -8,7 +8,6 @@ class Links (Container):
         self.road = road
         self.com_object = road.get('roads').get('net').get('com_object').Links
         self.makeElements(road_tags)
-        print('test')
     
     def makeElements(self, road_tags):
         for road_tag in road_tags:

@@ -81,7 +81,8 @@ class IntersectionTag(Base):
     id = Column(Integer, primary_key=True)
     intersection_id = Column(Integer, ForeignKey('intersections.id'))
     road_id = Column(Integer)
-    road_type = Column(Integer)
+    order = Column(Integer)
+    type = Column(Integer)
 
     intersection = relationship('Intersection', back_populates = 'intersection_tags')
 
