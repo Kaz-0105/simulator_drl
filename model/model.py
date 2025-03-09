@@ -24,6 +24,7 @@ class VissimFile(Base):
 
     inflows = relationship('Inflow', back_populates = 'vissim_file')
     roads = relationship('Road', back_populates = 'vissim_file')
+    intersections = relationship('Intersection', back_populates = 'vissim_file')
 
 class Inflow(Base):
     __tablename__ = 'inflows'
@@ -51,7 +52,6 @@ class Road(Base):
 
     id = Column(Integer, primary_key=True)
     vissim_file_id = Column(Integer, ForeignKey('vissim_files.id'))
-    order_id = Column(Integer)
 
     vissim_file = relationship('VissimFile', back_populates = 'roads')
     road_tags = relationship('RoadTag', back_populates = 'road')
@@ -65,6 +65,26 @@ class RoadTag(Base):
     link_type = Column(Integer)
 
     road = relationship('Road', back_populates = 'road_tags')
+
+class Intersection(Base):
+    __tablename__ = 'intersections'
+
+    id = Column(Integer, primary_key=True)
+    vissim_file_id = Column(Integer, ForeignKey('vissim_files.id'))
+
+    vissim_file = relationship('VissimFile', back_populates = 'intersections')
+    intersection_tags = relationship('IntersectionTag', back_populates = 'intersection')
+
+class IntersectionTag(Base):
+    __tablename__ = 'intersection_tags'
+
+    id = Column(Integer, primary_key=True)
+    intersection_id = Column(Integer, ForeignKey('intersections.id'))
+    road_id = Column(Integer)
+    order = Column(Integer)
+    type = Column(Integer)
+
+    intersection = relationship('Intersection', back_populates = 'intersection_tags')
 
 Session = sessionmaker(bind=engine)
 

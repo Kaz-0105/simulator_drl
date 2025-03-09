@@ -5,8 +5,14 @@ class Container (CommonObject):
         super().__init__()
         self.elements = {}
     
-    def add(self, element):
-        self.elements[element.get('id')] = element
+    def add(self, element, id=None):
+        if id is not None:
+            self.elements[id] = element
+        else:
+            self.elements[element.get('id')] = element
     
     def count(self):
         return len(self.elements)
+    
+    def objectByKey(self, id):
+        return self.elements[id]
