@@ -36,7 +36,7 @@ class Road (Object):
 
         self.id = data.id
 
-        self.Links = Links(self, data.road_tags)
+        self.links = Links(self)
 
 
 
