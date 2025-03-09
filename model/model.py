@@ -55,17 +55,17 @@ class Road(Base):
     vissim_file_id = Column(Integer, ForeignKey('vissim_files.id'))
 
     vissim_file = relationship('VissimFile', back_populates='roads')
-    road_tags = relationship('RoadTag', back_populates='road')
+    road_link_tags = relationship('RoadLinkTag', back_populates='road')
 
-class RoadTag(Base):
-    __tablename__ = 'road_tags'
+class RoadLinkTag(Base):
+    __tablename__ = 'road_link_tags'
 
     id = Column(Integer, primary_key=True)
     road_id = Column(Integer, ForeignKey('roads.id'))
     link_id = Column(Integer)
     link_type = Column(Integer)
 
-    road = relationship('Road', back_populates='road_tags')
+    road = relationship('Road', back_populates='road_link_tags')
 
 class Intersection(Base):
     __tablename__ = 'intersections'
@@ -74,10 +74,10 @@ class Intersection(Base):
     vissim_file_id = Column(Integer, ForeignKey('vissim_files.id'))
 
     vissim_file = relationship('VissimFile', back_populates='intersections')
-    intersection_tags = relationship('IntersectionTag', back_populates='intersection')
+    intersection_road_tags = relationship('IntersectionRoadTag', back_populates='intersection')
 
-class IntersectionTag(Base):
-    __tablename__ = 'intersection_tags'
+class IntersectionRoadTag(Base):
+    __tablename__ = 'intersection_road_tags'
 
     id = Column(Integer, primary_key=True)
     intersection_id = Column(Integer, ForeignKey('intersections.id'))
@@ -85,7 +85,7 @@ class IntersectionTag(Base):
     order = Column(Integer)
     type = Column(Integer)
 
-    intersection = relationship('Intersection', back_populates='intersection_tags')
+    intersection = relationship('Intersection', back_populates='intersection_road_tags')
 
 Session = sessionmaker(bind=engine)
 
@@ -96,7 +96,9 @@ class ConfigController:
         self.session = Session()
         self.VissimFile = VissimFile
         self.Road = Road
-        self.RoadTag = RoadTag
+        self.RoadLinkTag = RoadLinkTag
+        self.Intersection = Intersection
+        self.IntersectionRoadTag = IntersectionRoadTag
         self.Inflow = Inflow
         self.InflowTag = InflowTag
 

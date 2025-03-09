@@ -1,11 +1,11 @@
-CREATE TABLE road_tags (
+CREATE TABLE road_link_tags (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     road_id INTEGER NOT NULL,
     link_id INTEGER NOT NULL,
     link_type INTEGER NOT NULL
 );
 
-INSERT INTO road_tags (road_id, link_id, link_type) VALUES 
+INSERT INTO road_link_tags (road_id, link_id, link_type) VALUES 
 (1, 1, 1),
 (1, 9, 2),
 (1, 10000, 3),
